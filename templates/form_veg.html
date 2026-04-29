@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organic Veggie Warehouse - ฟอร์มผัก</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-green-50 text-slate-800">
+    <div class="flex min-h-screen items-center justify-center px-4 py-10 sm:px-6">
+        <div class="w-full max-w-2xl rounded-[32px] border border-emerald-100 bg-white p-8 shadow-2xl shadow-emerald-200/40">
+            <div class="mb-8 text-center">
+                <p class="text-sm uppercase tracking-[0.3em] text-emerald-500">Organic Veggie Warehouse</p>
+                <h1 class="mt-3 text-3xl font-semibold text-slate-900">แบบฟอร์มเพิ่ม / แก้ไขผัก</h1>
+                <p class="mt-2 text-sm text-slate-600">กรอกข้อมูลให้ครบถ้วน แล้วบันทึกเพื่อจัดการสต็อกผักออร์แกนิก</p>
+            </div>
+            <form method="post" class="space-y-6">
+                <div>
+                    <label for="veg_name" class="mb-2 block text-sm font-medium text-slate-700">ชื่อผัก</label>
+                    <input id="veg_name" name="veg_name" type="text" required placeholder="เช่น ผักคะน้า"
+                        class="w-full rounded-3xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-slate-900 outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100" value="{{ veg.veg_name if veg else '' }}">
+                </div>
+                <div>
+                    <label for="category" class="mb-2 block text-sm font-medium text-slate-700">หมวดหมู่</label>
+                    <select id="category" name="category" required class="w-full rounded-3xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-slate-900 outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100">
+                        <option value="" disabled selected>เลือกหมวดหมู่ผัก</option>
+                        <option value="ใบ">ผักใบ</option>
+                        <option value="หัว">ผักหัว</option>
+                        <option value="สมุนไพร">สมุนไพร</option>
+                        <option value="อื่นๆ">อื่น ๆ</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="storage_temp" class="mb-2 block text-sm font-medium text-slate-700">อุณหภูมิ</label>
+                    <input id="storage_temp" name="storage_temp" type="number" step="0.1" required placeholder="เช่น 4.5"
+                        class="w-full rounded-3xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-slate-900 outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100" value="{{ veg.storage_temp if veg else '' }}">
+                </div>
+                <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <button type="submit" class="inline-flex w-full items-center justify-center rounded-full bg-emerald-700 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-300/40 hover:bg-emerald-600 transition sm:w-auto">บันทึกข้อมูล</button>
+                    <a href="{{ url_for('index') }}" class="inline-flex w-full items-center justify-center rounded-full border border-emerald-200 bg-white px-6 py-3 text-sm font-semibold text-emerald-700 shadow-sm hover:bg-emerald-50 transition sm:w-auto">ยกเลิก / กลับหน้าหลัก</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
