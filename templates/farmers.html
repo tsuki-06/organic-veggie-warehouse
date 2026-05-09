@@ -31,6 +31,28 @@
             </div>
         </section>
 
+        <!-- ฟอร์มเพิ่มเกษตรกรใหม่ -->
+        <section class="mb-6 rounded-3xl border border-slate-200 bg-slate-50 p-6 shadow-md">
+            <h2 class="text-xl font-semibold text-slate-900 mb-4">เพิ่มเกษตรกรใหม่</h2>
+            <form action="{{ url_for('add_farmer') }}" method="post" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-slate-700">ชื่อ</label>
+                    <input type="text" id="name" name="name" required class="mt-1 block w-full rounded-md border-slate-400 bg-white px-3 py-2 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                </div>
+                <div>
+                    <label for="phone" class="block text-sm font-medium text-slate-700">เบอร์โทรศัพท์</label>
+                    <input type="tel" id="phone" name="phone" class="mt-1 block w-full rounded-md border-slate-400 bg-white px-3 py-2 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                </div>
+                <div class="md:col-span-2">
+                    <label for="address" class="block text-sm font-medium text-slate-700">ที่อยู่</label>
+                    <input type="text" id="address" name="address" class="mt-1 block w-full rounded-md border-slate-400 bg-white px-3 py-2 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                </div>
+                <div class="md:col-span-4 flex justify-end">
+                    <button type="submit" class="rounded-full bg-emerald-600 px-6 py-2 text-white hover:bg-emerald-700 transition shadow-sm">เพิ่มเกษตรกร</button>
+                </div>
+            </form>
+        </section>
+
         <section class="overflow-x-auto rounded-3xl bg-emerald-100/80 p-4 shadow-sm">
             <table class="min-w-full divide-y divide-emerald-200 text-sm">
                 <thead class="bg-emerald-900 text-white">
@@ -39,6 +61,7 @@
                         <th class="px-4 py-3 text-left uppercase tracking-wide">ชื่อ</th>
                         <th class="px-4 py-3 text-left uppercase tracking-wide">เบอร์โทรศัพท์</th>
                         <th class="px-4 py-3 text-left uppercase tracking-wide">ที่อยู่</th>
+                        <th class="px-4 py-3 text-left uppercase tracking-wide">การดำเนินการ</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-emerald-100 bg-white">
@@ -48,11 +71,28 @@
                         <td class="px-4 py-4">{{ farmer[1] }}</td>
                         <td class="px-4 py-4">{{ farmer[2] or '-' }}</td>
                         <td class="px-4 py-4">{{ farmer[3] or '-' }}</td>
+                        <td class="px-4 py-4">
+                            <button onclick="deleteFarmer({{ farmer[0] }}, '{{ farmer[1] }}')" class="rounded bg-red-500 px-3 py-1 text-white text-sm hover:bg-red-600 transition">ลบ</button>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </section>
     </main>
+
+    <script>
+        function deleteFarmer(farmerId, farmerName) {
+            if (confirm(`คุณต้องการลบเกษตรกร "${farmerName}" ใช่หรือไม่?`)) {
+                // สร้าง form และ submit เพื่อส่ง POST request
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/farmers/delete/${farmerId}`;
+                
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+    </script>
 </body>
 </html>

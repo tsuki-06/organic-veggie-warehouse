@@ -44,6 +44,50 @@ def farmers():
     conn.close()
     return render_template('farmers.html', farmers=farmers_list)
 
+@app.route('/farmers/add', methods=['POST'])
+def add_farmer():
+    name = request.form['name']
+    phone = request.form.get('phone', '').strip()
+    address = request.form.get('address', '').strip()
+    
+    conn = get_db()
+    cur = conn.cursor()
+    
+    # ตรวจสอบว่าชื่อเกษตรกรซ้ำหรือไม่
+    cur.execute("SELECT farmer_id FROM Farmers WHERE name = ?", (name,))
+    existing_farmer = cur.fetchone()
+    if existing_farmer:
+        conn.close()
+        # สามารถ redirect กลับพร้อม error message แต่ตอนนี้ยังไม่มี flash
+        return redirect(url_for('farmers'))
+    
+    # เพิ่มเกษตรกรใหม่
+    cur.execute("INSERT INTO Farmers (name, phone, address) VALUES (?, ?, ?)", (name, phone, address))
+    conn.commit()
+    conn.close()
+    
+    return redirect(url_for('farmers'))
+
+@app.route('/farmers/delete/<int:farmer_id>', methods=['POST'])
+def delete_farmer(farmer_id):
+    conn = get_db()
+    cur = conn.cursor()
+    
+    # ตรวจสอบว่ามีการใช้งานเกษตรกรนี้ใน Stock_Batches หรือไม่
+    cur.execute("SELECT COUNT(*) FROM Stock_Batches WHERE farmer_id = ?", (farmer_id,))
+    count = cur.fetchone()[0]
+    if count > 0:
+        conn.close()
+        # ไม่ลบถ้ามีการใช้งาน สามารถเพิ่ม flash message ได้
+        return redirect(url_for('farmers'))
+    
+    # ลบเกษตรกร
+    cur.execute("DELETE FROM Farmers WHERE farmer_id = ?", (farmer_id,))
+    conn.commit()
+    conn.close()
+    
+    return redirect(url_for('farmers'))
+
 @app.route('/vegetables/add', methods=['GET', 'POST'])
 def add_vegetable():
     if request.method == 'POST':
