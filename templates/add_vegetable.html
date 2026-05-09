@@ -43,13 +43,19 @@
                             class="w-full rounded-3xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-slate-900 outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100">
                     </div>
                     <div>
-                        <label for="farmer_id" class="mb-2 block text-sm font-medium text-slate-700">เกษตรกร</label>
-                        <select id="farmer_id" name="farmer_id" required class="w-full rounded-3xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-slate-900 outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100">
-                            <option value="" disabled selected>เลือกเกษตรกร</option>
-                            {% for farmer in farmers %}
-                            <option value="{{ farmer.farmer_id }}">{{ farmer.name }}</option>
-                            {% endfor %}
-                        </select>
+                        <label for="farmer_option" class="mb-2 block text-sm font-medium text-slate-700">เกษตรกร</label>
+                        <div class="space-y-2">
+                            <select id="farmer_select" name="farmer_select" required class="w-full rounded-3xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-slate-900 outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100">
+                                <option value="" disabled selected>เลือกเกษตรกร</option>
+                                {% for farmer in farmers %}
+                                <option value="{{ farmer.farmer_id }}">{{ farmer.name }}</option>
+                                {% endfor %}
+                                <option value="new">เพิ่มเกษตรกรใหม่</option>
+                            </select>
+                            <input id="new_farmer_name" name="new_farmer_name" type="text" placeholder="กรอกชื่อเกษตรกรใหม่"
+                                class="w-full rounded-3xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-slate-900 outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100" style="display: none;">
+                        </div>
+                        <input type="hidden" id="farmer_id" name="farmer_id">
                     </div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -87,5 +93,44 @@
             </form>
         </div>
     </div>
+    <script>
+        const farmerSelect = document.getElementById('farmer_select');
+        const newFarmerInput = document.getElementById('new_farmer_name');
+        const farmerIdHidden = document.getElementById('farmer_id');
+        const form = document.querySelector('form');
+
+        function updateFarmerFields() {
+            if (farmerSelect.value === 'new') {
+                newFarmerInput.style.display = 'block';
+                newFarmerInput.required = true;
+                farmerIdHidden.value = '';
+            } else if (farmerSelect.value !== '') {
+                newFarmerInput.style.display = 'none';
+                newFarmerInput.required = false;
+                newFarmerInput.value = '';
+                farmerIdHidden.value = farmerSelect.value;
+            }
+        }
+
+        farmerSelect.addEventListener('change', updateFarmerFields);
+
+        form.addEventListener('submit', function(e) {
+            if (farmerSelect.value === 'new' && newFarmerInput.value.trim() === '') {
+                e.preventDefault();
+                alert('กรุณากรอกชื่อเกษตรกรใหม่');
+                newFarmerInput.focus();
+                return false;
+            }
+            if (farmerSelect.value === '' || farmerSelect.value === null) {
+                e.preventDefault();
+                alert('กรุณาเลือกเกษตรกร');
+                farmerSelect.focus();
+                return false;
+            }
+        });
+
+        // Initial setup
+        updateFarmerFields();
+    </script>
 </body>
 </html>

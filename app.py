@@ -41,7 +41,8 @@ def add_vegetable():
         veg_name = request.form['veg_name']
         category = request.form['category']
         storage_temp = request.form['storage_temp']
-        farmer_id = request.form['farmer_id']
+        farmer_id = request.form.get('farmer_id')
+        new_farmer_name = request.form.get('new_farmer_name', '').strip()
         zone_id = request.form['zone_id']
         quantity = request.form['quantity']
         receive_date = request.form['receive_date']
@@ -49,6 +50,18 @@ def add_vegetable():
         
         conn = get_db()
         cur = conn.cursor()
+        
+        # Handle farmer - either existing or new
+        if new_farmer_name:
+            # Check if farmer already exists
+            cur.execute("SELECT farmer_id FROM Farmers WHERE name = ?", (new_farmer_name,))
+            existing_farmer = cur.fetchone()
+            if existing_farmer:
+                farmer_id = existing_farmer[0]
+            else:
+                # Insert new farmer
+                cur.execute("INSERT INTO Farmers (name) VALUES (?)", (new_farmer_name,))
+                farmer_id = cur.lastrowid
         
         # Insert vegetable
         cur.execute("INSERT INTO Vegetables (veg_name, category, storage_temp) VALUES (?, ?, ?)", (veg_name, category, storage_temp))
