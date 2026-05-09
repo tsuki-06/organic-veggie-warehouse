@@ -48,7 +48,7 @@
                         <td class="px-4 py-4">{{ veg[0] }}</td>
                         <td class="px-4 py-4">{{ veg[1] }}</td>
                         <td class="px-4 py-4">{{ veg[2] }}</td>
-                        <td class="px-4 py-4">{{ veg[3] }} (°C)</td>
+                        <td class="px-4 py-4">{{ veg[3] }} °C</td>
                         <td class="px-4 py-4 space-x-2">
                             <a href="{{ url_for('edit_vegetable', id=veg[0]) }}" class="inline-flex rounded-full bg-amber-300 px-3 py-2 text-sm font-semibold text-amber-900 hover:bg-amber-200 transition">แก้ไข</a>
                             <form method="post" action="{{ url_for('delete_vegetable', id=veg[0]) }}" class="inline-block">
