@@ -9,6 +9,7 @@ DATABASE = os.path.join(os.path.dirname(__file__), 'warehouse.db')
 def get_db():
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
+    conn.execute('PRAGMA foreign_keys = ON')
     return conn
 
 @app.route('/')
@@ -167,7 +168,18 @@ def edit_vegetable(id):
 def delete_vegetable(id):
     conn = get_db()
     cur = conn.cursor()
+
+    # ลบธุรกรรมที่เชื่อมกับล็อตผักก่อน
+    cur.execute("SELECT batch_id FROM Stock_Batches WHERE veg_id=?", (id,))
+    batch_ids = [row[0] for row in cur.fetchall()]
+    if batch_ids:
+        cur.executemany("DELETE FROM Transactions WHERE batch_id=?", [(batch_id,) for batch_id in batch_ids])
+
+    # ลบล็อตผักที่เกี่ยวข้อง
+    cur.execute("DELETE FROM Stock_Batches WHERE veg_id=?", (id,))
+    # ลบข้อมูลผัก
     cur.execute("DELETE FROM Vegetables WHERE veg_id=?", (id,))
+
     conn.commit()
     conn.close()
     return redirect(url_for('vegetables'))
