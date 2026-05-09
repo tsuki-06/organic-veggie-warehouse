@@ -35,6 +35,15 @@ def vegetables():
     conn.close()
     return render_template('vegetables.html', veggies=veggies)
 
+@app.route('/farmers')
+def farmers():
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM Farmers")
+    farmers_list = cur.fetchall()
+    conn.close()
+    return render_template('farmers.html', farmers=farmers_list)
+
 @app.route('/vegetables/add', methods=['GET', 'POST'])
 def add_vegetable():
     if request.method == 'POST':
