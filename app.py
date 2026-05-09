@@ -41,13 +41,42 @@ def add_vegetable():
         veg_name = request.form['veg_name']
         category = request.form['category']
         storage_temp = request.form['storage_temp']
+        farmer_id = request.form['farmer_id']
+        zone_id = request.form['zone_id']
+        quantity = request.form['quantity']
+        receive_date = request.form['receive_date']
+        expiry_date = request.form['expiry_date']
+        
         conn = get_db()
         cur = conn.cursor()
+        
+        # Insert vegetable
         cur.execute("INSERT INTO Vegetables (veg_name, category, storage_temp) VALUES (?, ?, ?)", (veg_name, category, storage_temp))
+        veg_id = cur.lastrowid
+        
+        # Insert stock batch
+        cur.execute("INSERT INTO Stock_Batches (veg_id, farmer_id, zone_id, quantity, receive_date, expiry_date) VALUES (?, ?, ?, ?, ?, ?)", 
+                   (veg_id, farmer_id, zone_id, quantity, receive_date, expiry_date))
+        
+        # Insert transaction
+        batch_id = cur.lastrowid
+        cur.execute("INSERT INTO Transactions (batch_id, transaction_type, qty_changed, transaction_date) VALUES (?, 'IN', ?, ?)", 
+                   (batch_id, quantity, receive_date))
+        
         conn.commit()
         conn.close()
         return redirect(url_for('vegetables'))
-    return render_template('add_vegetable.html')
+    
+    # Get farmers and zones for dropdowns
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("SELECT farmer_id, name FROM Farmers")
+    farmers = cur.fetchall()
+    cur.execute("SELECT zone_id, zone_name FROM Storage_Zones")
+    zones = cur.fetchall()
+    conn.close()
+    
+    return render_template('add_vegetable.html', farmers=farmers, zones=zones)
 
 @app.route('/vegetables/edit/<int:id>', methods=['GET', 'POST'])
 def edit_vegetable(id):
