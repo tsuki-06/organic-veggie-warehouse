@@ -54,6 +54,10 @@
                             </select>
                             <input id="new_farmer_name" name="new_farmer_name" type="text" placeholder="กรอกชื่อเกษตรกรใหม่"
                                 class="w-full rounded-3xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-slate-900 outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100" style="display: none;">
+                            <input id="new_farmer_phone" name="new_farmer_phone" type="text" placeholder="กรอกเบอร์โทรศัพท์"
+                                class="w-full rounded-3xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-slate-900 outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100" style="display: none;">
+                            <input id="new_farmer_address" name="new_farmer_address" type="text" placeholder="กรอกที่อยู่"
+                                class="w-full rounded-3xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-slate-900 outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100" style="display: none;">
                         </div>
                         <input type="hidden" id="farmer_id" name="farmer_id">
                     </div>
@@ -96,6 +100,8 @@
     <script>
         const farmerSelect = document.getElementById('farmer_select');
         const newFarmerInput = document.getElementById('new_farmer_name');
+        const newFarmerPhone = document.getElementById('new_farmer_phone');
+        const newFarmerAddress = document.getElementById('new_farmer_address');
         const farmerIdHidden = document.getElementById('farmer_id');
         const form = document.querySelector('form');
 
@@ -103,11 +109,21 @@
             if (farmerSelect.value === 'new') {
                 newFarmerInput.style.display = 'block';
                 newFarmerInput.required = true;
+                newFarmerPhone.style.display = 'block';
+                newFarmerPhone.required = true;
+                newFarmerAddress.style.display = 'block';
+                newFarmerAddress.required = true;
                 farmerIdHidden.value = '';
             } else if (farmerSelect.value !== '') {
                 newFarmerInput.style.display = 'none';
                 newFarmerInput.required = false;
                 newFarmerInput.value = '';
+                newFarmerPhone.style.display = 'none';
+                newFarmerPhone.required = false;
+                newFarmerPhone.value = '';
+                newFarmerAddress.style.display = 'none';
+                newFarmerAddress.required = false;
+                newFarmerAddress.value = '';
                 farmerIdHidden.value = farmerSelect.value;
             }
         }
@@ -115,11 +131,25 @@
         farmerSelect.addEventListener('change', updateFarmerFields);
 
         form.addEventListener('submit', function(e) {
-            if (farmerSelect.value === 'new' && newFarmerInput.value.trim() === '') {
-                e.preventDefault();
-                alert('กรุณากรอกชื่อเกษตรกรใหม่');
-                newFarmerInput.focus();
-                return false;
+            if (farmerSelect.value === 'new') {
+                if (newFarmerInput.value.trim() === '') {
+                    e.preventDefault();
+                    alert('กรุณากรอกชื่อเกษตรกรใหม่');
+                    newFarmerInput.focus();
+                    return false;
+                }
+                if (newFarmerPhone.value.trim() === '') {
+                    e.preventDefault();
+                    alert('กรุณากรอกเบอร์โทรศัพท์');
+                    newFarmerPhone.focus();
+                    return false;
+                }
+                if (newFarmerAddress.value.trim() === '') {
+                    e.preventDefault();
+                    alert('กรุณากรอกที่อยู่');
+                    newFarmerAddress.focus();
+                    return false;
+                }
             }
             if (farmerSelect.value === '' || farmerSelect.value === null) {
                 e.preventDefault();

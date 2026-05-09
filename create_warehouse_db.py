@@ -72,16 +72,16 @@ INSERT INTO Farmers VALUES (9, 'นายธนวัฒน์ ร่ำรว�
 INSERT INTO Farmers VALUES (10, 'นางสาวปราณี ใจเย็น', '0801234567', 'สมุทรปราการ');
 
 -- แทรกข้อมูล Vegetables (10 records)
-INSERT INTO Vegetables VALUES (1, 'ผักกาดหอม', 'ผักใบ', '4°C');
-INSERT INTO Vegetables VALUES (2, 'มะเขือเทศ', 'ผักผล', '7°C');
-INSERT INTO Vegetables VALUES (3, 'คะน้า', 'ผักใบ', '4°C');
-INSERT INTO Vegetables VALUES (4, 'บร็อกโคลี', 'ผักดอก', '4°C');
-INSERT INTO Vegetables VALUES (5, 'แครอท', 'ผักราก', '0°C');
-INSERT INTO Vegetables VALUES (6, 'หัวหอมใหญ่', 'ผักหัว', '0°C');
-INSERT INTO Vegetables VALUES (7, 'พริกหยวก', 'ผักผล', '7°C');
-INSERT INTO Vegetables VALUES (8, 'แตงกวา', 'ผักผล', '10°C');
-INSERT INTO Vegetables VALUES (9, 'ผักชี', 'ผักใบ', '4°C');
-INSERT INTO Vegetables VALUES (10, 'กะหล่ำปลี', 'ผักดอก', '0°C');
+INSERT INTO Vegetables VALUES (1, 'ผักกาดหอม', 'ผักใบ', '4');
+INSERT INTO Vegetables VALUES (2, 'มะเขือเทศ', 'ผักผล', '7');
+INSERT INTO Vegetables VALUES (3, 'คะน้า', 'ผักใบ', '4');
+INSERT INTO Vegetables VALUES (4, 'บร็อกโคลี', 'ผักดอก', '4');
+INSERT INTO Vegetables VALUES (5, 'แครอท', 'ผักราก', '0');
+INSERT INTO Vegetables VALUES (6, 'หัวหอมใหญ่', 'ผักหัว', '0');
+INSERT INTO Vegetables VALUES (7, 'พริกหยวก', 'ผักผล', '7');
+INSERT INTO Vegetables VALUES (8, 'แตงกวา', 'ผักผล', '10');
+INSERT INTO Vegetables VALUES (9, 'ผักชี', 'ผักใบ', '4');
+INSERT INTO Vegetables VALUES (10, 'กะหล่ำปลี', 'ผักดอก', '0');
 
 -- แทรกข้อมูล Storage_Zones (10 records)
 INSERT INTO Storage_Zones VALUES (1, 'โซน A', 1000);
